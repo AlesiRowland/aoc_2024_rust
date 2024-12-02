@@ -70,7 +70,7 @@ fn create_sub_report(skipped: usize, report: &Report) -> Report {
         .enumerate()
         .for_each(|(index, value)| {
             if index != skipped {
-
+                sub_report.push(*value);
             }
         });
     sub_report
