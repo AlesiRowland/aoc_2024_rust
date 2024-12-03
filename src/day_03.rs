@@ -59,7 +59,7 @@ fn get_toggled_computer_instructions_sum(instructions: &str) -> usize {
 }
 #[cfg(test)]
 mod tests {
-    use crate::answers::{DAY_02_HARD, DAY_03_EASY};
+    use crate::answers::{DAY_02_HARD, DAY_03_EASY, DAY_03_HARD};
     use crate::day_03::{get_computer_instructions_sum, get_toggled_computer_instructions_sum};
     use lazy_static::lazy_static;
     use regex::Regex;
@@ -75,7 +75,7 @@ mod tests {
     #[test]
     fn hard() {
         let left = get_toggled_computer_instructions_sum(INSTRUCTIONS);
-        let right = DAY_02_HARD;
+        let right = DAY_03_HARD;
         assert_eq!(left, right)
     }
 }
