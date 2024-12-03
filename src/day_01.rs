@@ -10,7 +10,9 @@ fn find_sorted_differences_sum(left: &mut [isize], right: &mut [isize]) -> isize
 fn get_similarity_score(left: &[isize], right: &[isize]) -> isize {
     // create a list of the counts of each value to avoid running through the list alot
     let count_lookup = create_count_lookup(right);
-    left.iter().map(|val| *val * *count_lookup.get(val).unwrap_or(&0)).sum()
+    left.iter()
+        .map(|val| *val * *count_lookup.get(val).unwrap_or(&0))
+        .sum()
 }
 
 fn create_count_lookup(values: &[isize]) -> HashMap<isize, isize> {
@@ -27,9 +29,7 @@ fn parse_input(input: &str) -> [Vec<isize>; 2] {
     let mut left = Vec::new();
     let mut right = Vec::new();
     input.split('\n').for_each(|line| {
-        let mut parts = line.
-            split("   ")
-            .map(|val| val.parse::<isize>().unwrap());
+        let mut parts = line.split("   ").map(|val| val.parse::<isize>().unwrap());
         left.push(parts.next().unwrap());
         right.push(parts.next().unwrap());
     });
@@ -38,7 +38,9 @@ fn parse_input(input: &str) -> [Vec<isize>; 2] {
 #[cfg(test)]
 mod tests {
     use crate::answers::{DAY_01_EASY, DAY_01_HARD};
-    use crate::day_01::{create_count_lookup, find_sorted_differences_sum, get_similarity_score, parse_input};
+    use crate::day_01::{
+        create_count_lookup, find_sorted_differences_sum, get_similarity_score, parse_input,
+    };
 
     const INPUT: &str = include_str!("../resources/day_01/easy.txt");
 
