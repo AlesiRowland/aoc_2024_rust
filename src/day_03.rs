@@ -1,8 +1,7 @@
 use lazy_static::lazy_static;
 use regex::Regex;
-use std::string::ParseError;
 
-fn get_computer_instructions_sum(instructions: &str) -> usize {
+pub fn get_computer_instructions_sum(instructions: &str) -> usize {
     lazy_static! {
         static ref RE: Regex = Regex::new(r"mul\((\d{1,3}),(\d{1,3})\)").unwrap();
     };
@@ -30,7 +29,7 @@ impl From<&str> for Toggle {
         }
     }
 }
-fn get_toggled_computer_instructions_sum(instructions: &str) -> usize {
+pub fn get_toggled_computer_instructions_sum(instructions: &str) -> usize {
     lazy_static! {
         static ref RE: Regex =
             Regex::new(r"(?P<toggle>don't|do)|mul\((?P<first>\d{1,3}),(?P<second>\d{1,3})\)")
@@ -59,10 +58,8 @@ fn get_toggled_computer_instructions_sum(instructions: &str) -> usize {
 }
 #[cfg(test)]
 mod tests {
-    use crate::answers::{DAY_02_HARD, DAY_03_EASY, DAY_03_HARD};
+    use crate::answers::{DAY_03_EASY, DAY_03_HARD};
     use crate::day_03::{get_computer_instructions_sum, get_toggled_computer_instructions_sum};
-    use lazy_static::lazy_static;
-    use regex::Regex;
 
     const INSTRUCTIONS: &str = include_str!("../resources/day_03/easy.txt");
     #[test]
