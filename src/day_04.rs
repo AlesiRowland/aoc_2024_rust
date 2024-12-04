@@ -104,13 +104,6 @@ fn word_exists_in_direction(
         let Some(ch) = word_search.get_scalar(&current) else {
             return false;
         };
-        // let Some(line) = word_search.get(current.y) else {
-        //     return false;
-        // };
-        //
-        // let Some(ch) = line.get(current.x) else {
-        //     return false;
-        // };
 
         if char != ch {
             return false;
