@@ -1,6 +1,5 @@
 type Report = Vec<isize>;
 
-
 pub fn find_number_of_safe_reports(reports: &[Report]) -> isize {
     reports
         .iter()
@@ -19,7 +18,7 @@ fn is_safe_report(report: &Report) -> bool {
         let abs_diff = diff.abs();
 
         if !(1..4).contains(&abs_diff) {
-            return false
+            return false;
         }
 
         let current_order = diff / abs_diff;
@@ -64,7 +63,9 @@ fn create_sub_report(skipped: usize, report: &Report) -> Report {
 #[cfg(test)]
 mod tests {
     use crate::answers::{DAY_02_EASY, DAY_02_HARD};
-    use crate::day_02::{find_number_of_dampened_safe_reports, find_number_of_safe_reports,  Report};
+    use crate::day_02::{
+        find_number_of_dampened_safe_reports, find_number_of_safe_reports, Report,
+    };
 
     const INPUT: &str = include_str!("../resources/day_02/easy.txt");
 

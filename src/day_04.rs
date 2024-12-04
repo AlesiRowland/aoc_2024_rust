@@ -1,5 +1,14 @@
 type WordSearch = Vec<Vec<char>>;
 
+macro_rules! unwrap_or_return_false {
+    ($op:expr) => {
+        match $op {
+            Some(value) => value,
+            None => return false,
+        }
+    };
+}
+
 trait Matrix<T> {
     fn get_scalar(&self, point: &Point) -> Option<&T>;
 }
@@ -10,14 +19,21 @@ impl Matrix<char> for WordSearch {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+struct MatrixPointsIterator {
+    x_cursor: usize,
+    y_cursor: usize,
+    row_length: usize,
+    column_length: usize,
+}
+
+#[derive(Clone, Debug, PartialEq)]
 struct Point {
     x: usize,
     y: usize,
 }
 
 impl Point {
-    fn move_in_direction(&self, direction: &Direction) -> Option<Point> {
+    fn shift(&self, direction: &Direction) -> Option<Point> {
         match direction {
             Direction::North => Some(Point {
                 x: self.x,
@@ -35,12 +51,23 @@ impl Point {
                 x: self.x.checked_sub(1)?,
                 y: self.y,
             }),
+            Direction::NorthEast => Some(Point {
+                x: self.x.checked_add(1)?,
+                y: self.y.checked_sub(1)?,
+            }),
+            Direction::NorthWest => Some(Point {
+                x: self.x.checked_sub(1)?,
+                y: self.y.checked_sub(1)?,
+            }),
+            Direction::SouthEast => Some(Point {
+                x: self.x.checked_add(1)?,
+                y: self.y.checked_add(1)?,
+            }),
+            Direction::SouthWest => Some(Point {
+                x: self.x.checked_sub(1)?,
+                y: self.y.checked_add(1)?,
+            }),
         }
-    }
-    fn move_in_directions(&self, directions: &[Direction]) -> Option<Point> {
-        directions.iter().try_fold(self.clone(), |a, b| {
-            a.move_in_direction(b)
-        })
     }
 }
 
@@ -49,18 +76,22 @@ enum Direction {
     South,
     East,
     West,
+    NorthEast,
+    NorthWest,
+    SouthEast,
+    SouthWest,
 }
 
-fn iter_directions() -> [Vec<Direction>; 8] {
+fn iter_directions() -> [Direction; 8] {
     [
-        vec![Direction::North],
-        vec![Direction::East],
-        vec![Direction::South],
-        vec![Direction::West],
-        vec![Direction::North, Direction::East],
-        vec![Direction::North, Direction::West],
-        vec![Direction::South, Direction::East],
-        vec![Direction::South, Direction::West],
+        Direction::North,
+        Direction::East,
+        Direction::West,
+        Direction::South,
+        Direction::NorthWest,
+        Direction::NorthEast,
+        Direction::SouthEast,
+        Direction::SouthWest,
     ]
 }
 
@@ -83,25 +114,20 @@ pub fn get_word_count(word: &str, word_search: &WordSearch) -> usize {
 
 fn word_exists_in_direction(
     start: &Point,
-    directions: &[Direction],
+    direction: &Direction,
     word_chars: &[char],
     word_search: &WordSearch,
 ) -> bool {
     let mut next_index = Some(start.clone());
 
     for char in word_chars {
-        let Some(current) = next_index.take() else {
-            return false;
-        };
-
-        let Some(ch) = word_search.get_scalar(&current) else {
-            return false;
-        };
+        let current = unwrap_or_return_false!(next_index.take());
+        let ch = unwrap_or_return_false!(word_search.get_scalar(&current));
 
         if char != ch {
             return false;
         };
-        next_index = current.move_in_directions(directions);
+        next_index = current.shift(direction);
     }
     true
 }
@@ -115,61 +141,38 @@ pub fn get_cross_word_count(word_search: &WordSearch) -> usize {
             count += xmas_found(&start, word_search) as usize;
         }
     }
-
     count
 }
 
 fn xmas_found(start: &Point, word_search: &WordSearch) -> bool {
-    let Some(origin) = word_search.get_scalar(start) else {
-        return false;
-    };
+    let origin = unwrap_or_return_false!(word_search.get_scalar(start));
 
     if origin != &'A' {
         return false;
     };
 
     // Check left Diagonal
-    let Some(upper_left_index) = start.move_in_directions(&[Direction::North, Direction::West])
-    else {
-        return false;
-    };
-    let Some(lower_right_index) = start.move_in_directions(&[Direction::South, Direction::East])
-    else {
-        return false;
-    };
+    let upper_left_index = unwrap_or_return_false!(start.shift(&Direction::NorthWest));
+    let upper_left = unwrap_or_return_false!(word_search.get_scalar(&upper_left_index));
 
-    let Some(upper_left) = word_search.get_scalar(&upper_left_index) else {
-        return false;
-    };
-    let Some(lower_right) = word_search.get_scalar(&lower_right_index) else {
-        return false;
-    };
+    let lower_right_index = unwrap_or_return_false!(start.shift(&Direction::SouthEast));
+    let lower_right = unwrap_or_return_false!(word_search.get_scalar(&lower_right_index));
 
     if !((upper_left == &'M' && lower_right == &'S') || (upper_left == &'S' && lower_right == &'M'))
     {
         return false;
     }
 
-    let Some(upper_right_index) = start.move_in_directions(&[Direction::North, Direction::East])
-    else {
-        return false;
-    };
-    let Some(lower_left_index) = start.move_in_directions(&[Direction::South, Direction::West])
-    else {
-        return false;
-    };
-
-    let Some(upper_right) = word_search.get_scalar(&upper_right_index) else {
-        return false;
-    };
-    let Some(lower_left) = word_search.get_scalar(&lower_left_index) else {
-        return false;
-    };
+    let upper_right_index = unwrap_or_return_false!(start.shift(&Direction::NorthEast));
+    let upper_right = unwrap_or_return_false!(word_search.get_scalar(&upper_right_index));
+    let lower_left_index = unwrap_or_return_false!(start.shift(&Direction::SouthWest));
+    let lower_left = unwrap_or_return_false!(word_search.get_scalar(&lower_left_index));
 
     if !((upper_right == &'M' && lower_left == &'S') || (upper_right == &'S' && lower_left == &'M'))
     {
         return false;
     }
+
     true
 }
 

@@ -27,9 +27,7 @@ fn create_count_lookup(values: &[isize]) -> HashMap<isize, isize> {
 #[cfg(test)]
 mod tests {
     use crate::answers::{DAY_01_EASY, DAY_01_HARD};
-    use crate::day_01::{
-        create_count_lookup, find_sorted_differences_sum, get_similarity_score,
-    };
+    use crate::day_01::{create_count_lookup, find_sorted_differences_sum, get_similarity_score};
 
     const INPUT: &str = include_str!("../resources/day_01/easy.txt");
 
