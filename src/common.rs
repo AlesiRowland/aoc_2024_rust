@@ -55,7 +55,17 @@ pub(crate) enum Direction {
     SouthEast,
     SouthWest,
 }
-
+impl Direction {
+    pub(crate) fn rotate_90_degrees_clockwise(&self) -> Self {
+        match self {
+            Direction::North => Direction::East,
+            Direction::East => Direction::South,
+            Direction::South => Direction::West,
+            Direction::West => Direction::North,
+            _ => unreachable!(),
+        }
+    }
+}
 pub(crate) trait Matrix<T> {
     fn get_scalar(&self, point: &Point) -> Option<&T>;
 }
