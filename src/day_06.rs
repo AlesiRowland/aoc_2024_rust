@@ -1,5 +1,9 @@
 use crate::common::{Direction, Matrix, Point};
+use std::collections::HashSet;
+use std::hash::Hash;
 use std::iter::Extend;
+use std::mem::needs_drop;
+
 type Lab = Vec<Vec<char>>;
 
 macro_rules! unwrap_or_break {
@@ -28,6 +32,83 @@ pub fn find_patrol_path(lab: &Lab) -> Option<Vec<Point>> {
     Some(patrol_path)
 }
 
+pub fn find_obstructions(lab: &Lab) -> Option<Vec<Point>> {
+    let mut obstructions = Vec::new();
+    let mut visited = Vec::new();
+    let mut direction = Direction::North;
+    let mut pos = find_guard_location(lab)?;
+    let mut cannot_obstruct = HashSet::new();
+
+    loop {
+        let Some(next_pos) = pos.shift(&direction) else {
+            return Some(obstructions);
+        };
+
+        let Some(next_tile) = lab.get_scalar(&next_pos) else {
+            return Some(obstructions);
+        };
+
+        if next_tile == &'#' {
+            direction = direction.rotate_90_degrees_clockwise();
+            continue;
+        }
+
+        visited.push((direction.clone(), pos));
+        cannot_obstruct.insert(pos);
+
+
+        let obstruction = next_pos;
+
+        if !cannot_obstruct.contains(&obstruction) {
+            let mut inner_visited = Vec::new();
+            let mut direction = direction.rotate_90_degrees_clockwise();
+            let mut pos = pos.clone();
+            loop {
+                let Some(next_pos) = pos.shift(&direction) else {
+                    break;
+                };
+                let Some(next_tile) = lab.get_scalar(&next_pos) else {
+                    break;
+                };
+
+                if next_tile == &'#' || next_pos == obstruction {
+                    direction = direction.rotate_90_degrees_clockwise();
+                    continue;
+                } else if visited.contains(&(direction.clone(), pos))
+                    || inner_visited.contains(&(direction.clone(), pos))
+                {
+                    obstructions.push(obstruction);
+
+                    // // Let's just print every version of the loop at this point
+                    // let visited = visited.iter().chain(inner_visited.iter()).map(|a|a.1).collect::<HashSet<_>>();
+                    // for y in 0..lab.len() {
+                    //     for x in 0..lab[y].len() {
+                    //         let point = Point {x, y};
+                    //         let orig_char = lab[y][x];
+                    //
+                    //         if point == obstruction {
+                    //             print!("0")
+                    //         } else if visited.contains(&point) {
+                    //             print!("x")
+                    //         } else {
+                    //             print!("{}", orig_char)
+                    //         }
+                    //     }
+                    //     print!("\n");
+                    // }
+                    // print!("\n\n");
+
+                    break;
+                } else {
+                    inner_visited.push((direction.clone(), pos));
+                    pos = next_pos;
+                }
+            }
+        }
+        pos = next_pos;
+    }
+}
+
 fn find_guard_location(lab: &Lab) -> Option<Point> {
     for y in 0..lab.len() {
         for x in 0..lab[0].len() {
@@ -42,11 +123,14 @@ fn find_guard_location(lab: &Lab) -> Option<Point> {
 #[cfg(test)]
 mod tests {
     use crate::common::{Matrix, Point};
-    use crate::day_06:: {find_patrol_path, Lab};
+    use crate::day_06::{find_obstructions, find_patrol_path, Lab};
     use std::collections::HashSet;
     use std::hash::Hash;
 
     const INPUT: &str = include_str!("../resources/day_06/easy.txt");
+    const PREAMBLE: &str = include_str!("../resources/day_06/preamble.txt");
+    const DEBUG: &str = include_str!("../resources/day_06/debug.txt");
+
     fn parse_input(input: &str) -> Lab {
         input
             .split("\n")
@@ -63,13 +147,23 @@ mod tests {
         let right = 4752;
         assert_eq!(left, right);
     }
-    // #[test]
-    // fn hard() {
-    //     let lab = parse_input(INPUT);
-    //     let mut left = HashSet::new();
-    //     left.extend(find_obstruction_positions(&lab).unwrap());
-    //     let left = left.len();
-    //     let right = 4752;
-    //     assert_eq!(left, right);
-    // }
+    #[test]
+    fn hard() {
+        let lab = parse_input(INPUT);
+        let mut left = HashSet::new();
+        left.extend(find_obstructions(&lab).unwrap());
+
+        for y in 0..lab.len() {
+            for x in 0..lab[0].len() {
+                let p = Point { x, y };
+                if left.contains(&p) {
+                    print!("0");
+                } else {
+                    print!("{}", lab[y][x]);
+                }
+            }
+            print!("\n");
+        }
+        assert_eq!(left.len(), 1719);
+    }
 }
