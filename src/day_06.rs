@@ -79,25 +79,6 @@ pub fn find_obstructions(lab: &Lab) -> Option<Vec<Point>> {
                 {
                     obstructions.push(obstruction);
 
-                    // // Let's just print every version of the loop at this point
-                    // let visited = visited.iter().chain(inner_visited.iter()).map(|a|a.1).collect::<HashSet<_>>();
-                    // for y in 0..lab.len() {
-                    //     for x in 0..lab[y].len() {
-                    //         let point = Point {x, y};
-                    //         let orig_char = lab[y][x];
-                    //
-                    //         if point == obstruction {
-                    //             print!("0")
-                    //         } else if visited.contains(&point) {
-                    //             print!("x")
-                    //         } else {
-                    //             print!("{}", orig_char)
-                    //         }
-                    //     }
-                    //     print!("\n");
-                    // }
-                    // print!("\n\n");
-
                     break;
                 } else {
                     inner_visited.push((direction.clone(), pos));
