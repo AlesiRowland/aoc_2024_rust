@@ -144,6 +144,7 @@ fn find_antenna_positions(matrix: &Vec<Vec<char>>) -> HashMap<char, Vec<Point<is
 mod tests {
     use std::arch::aarch64::vreinterpret_f32_f64;
     use std::collections::{HashMap, HashSet};
+    use crate::answers::{DAY_08_EASY, DAY_08_HARD};
     use crate::day_08::{find_all_anti_nodes, find_antinodes_hard, Index, Matrix};
 
     const PREAMBLE: &str = include_str!("../resources/day_08/preamble.txt");
@@ -175,14 +176,14 @@ mod tests {
     #[test]
     fn easy() {
         let left = find_all_anti_nodes(&parse_input(EASY)).len();
-        let right = 291;
+        let right = DAY_08_EASY;
         assert_eq!(left, right);
     }
     #[test]
     fn hard() {
 
         let left = find_antinodes_hard(&parse_input(EASY)).iter().collect::<HashSet<_>>().len();
-        let right = 1015;
+        let right = DAY_08_HARD;
         assert_eq!(left, right);
     }
 }

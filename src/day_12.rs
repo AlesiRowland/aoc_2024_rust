@@ -278,6 +278,7 @@ fn find_neighbours(
 
 #[cfg(test)]
 mod tests {
+    use crate::answers::{DAY_11_EASY, DAY_12_EASY, DAY_12_HARD};
     use crate::day_12::{get_discounted_price, get_price};
 
     const PREAMBLE: &str = include_str!("../resources/day_12/preamble.txt");
@@ -298,14 +299,14 @@ mod tests {
     fn easy() {
         let input = parse_input(INPUT);
         let left = get_price(&input);
-        let right = 1477762;
+        let right = DAY_12_EASY;
         assert_eq!(left, right)
     }
     #[test]
     fn preamble_hard() {
         let input = parse_input(PREAMBLE);
         let left = get_discounted_price(&input);
-        let right =1206;
+        let right =DAY_12_HARD;
         assert_eq!(left, right)
     }
     #[test]

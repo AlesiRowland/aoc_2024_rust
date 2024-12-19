@@ -112,6 +112,7 @@ fn find_sum_hard(input: &mut Vec<(VecDeque<isize>, isize)>) -> isize {
 #[cfg(test)]
 mod tests {
     use std::collections::VecDeque;
+    use crate::answers::{DAY_07_EASY, DAY_07_HARD};
     use crate::day_07::{find_sum, find_sum_hard, Equation};
 
     const INPUT: &str = include_str!("../resources/day_07/day_07.txt");
@@ -127,14 +128,14 @@ mod tests {
     fn easy() {
         let mut lines = parse_input(INPUT);
         let left = find_sum(&mut lines);
-        assert_eq!(left, 5512534574980)
+        assert_eq!(left, DAY_07_EASY)
 
     }
     #[test]
     fn hard() {
         let mut lines = parse_input(INPUT);
         let left = find_sum_hard(&mut lines);
-        assert_eq!(left, 328790210468594)
+        assert_eq!(left, DAY_07_HARD)
 
     }
 }

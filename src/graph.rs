@@ -144,7 +144,7 @@ fn iter_directions() -> [Direction; 8] {
         Direction::SouthWest,
     ]
 }
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Copy)]
 pub(crate) enum Direction {
     North,
     South,

@@ -85,6 +85,7 @@ mod tests {
     use crate::graph::Coordinate;
     use lazy_static::lazy_static;
     use regex::Regex;
+    use crate::answers::DAY_14_EASY;
 
     const PREAMBLE: &str = include_str!("../resources/day_14/preamble.txt");
     const INPUT: &str = include_str!("../resources/day_14/input.txt");
@@ -130,7 +131,7 @@ mod tests {
         };
         let mut input = parse_input(INPUT);
         let left = check_safety(&mut input, 100, &dimensions);
-        let right = 211773366;
+        let right = DAY_14_EASY;
         assert_eq!(left, right)
         // let right = 0;
     }

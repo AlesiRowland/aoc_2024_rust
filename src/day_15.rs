@@ -297,6 +297,7 @@ fn resize_warehouse(warehouse: &mut Warehouse) {
 
 #[cfg(test)]
 mod tests {
+    use crate::answers::{DAY_15_EASY, DAY_15_HARD};
     use crate::day_15::{count_score, count_wide_score, parse_input, print_warehouse, resize_warehouse, update_warehouse, update_wide_warehouse, Warehouse};
     use crate::graph::{Index, Matrix};
 
@@ -320,7 +321,7 @@ mod tests {
         let (mut warehouse, instructions) = parse_input(EASY);
         update_warehouse(&mut warehouse, &instructions);
         let left = count_score(&warehouse);
-        let right = 1563092;
+        let right = DAY_15_EASY;
         assert_eq!(left, right);
     }
 
@@ -347,7 +348,7 @@ mod tests {
         println!("###RESULT###");
         print_warehouse(&warehouse);
         let left = count_wide_score(&warehouse);
-        let right = 1582688;
+        let right = DAY_15_HARD;
         assert_eq!(left, right);
     }
 }

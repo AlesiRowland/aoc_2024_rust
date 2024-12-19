@@ -47,6 +47,7 @@ fn blink_stones(stones: Vec<usize>, n: usize) -> usize {
 
 #[cfg(test)]
 mod tests {
+    use crate::answers::{DAY_11_EASY, DAY_11_HARD};
     use crate::day_11::blink_stones;
 
 
@@ -59,13 +60,13 @@ mod tests {
     #[test]
     fn easy() {
         let left = blink_stones(vec![27, 10647, 103, 9, 0, 5524, 4594227, 902936], 25);
-        let right = 229043;
+        let right = DAY_11_EASY;
         assert_eq!(left, right)
     }
     #[test]
     fn hard() {
         let left = blink_stones(vec![27, 10647, 103, 9, 0, 5524, 4594227, 902936], 75);
-        let right = 272673043446478;
+        let right = DAY_11_HARD;
         assert_eq!(left, right)
     }
 }

@@ -79,6 +79,7 @@ fn sort_page_order(page_order: &mut [usize], lookup: &HashMap<usize, HashSet<usi
 
 #[cfg(test)]
 mod tests {
+    use crate::answers::{DAY_05_EASY, DAY_05_HARD};
     use crate::day_05::{day_05, day_05_hard};
 
     const INPUT: &str = include_str!("../resources/day_05/easy.txt");
@@ -110,7 +111,7 @@ mod tests {
     fn easy() {
         let (ordering_rules, page_orders) = parse_input(INPUT);
         let left = day_05(&ordering_rules, &page_orders);
-        let right = 4462;
+        let right = DAY_05_EASY;
         assert_eq!(left, right);
     }
 
@@ -118,7 +119,7 @@ mod tests {
     fn hard() {
         let (ordering_rules, page_orders) = parse_input(INPUT);
         let left = day_05_hard(&ordering_rules, &page_orders);
-        let right = 6767;
+        let right = DAY_05_HARD;
         assert_eq!(left, right)
     }
 }

@@ -178,6 +178,7 @@ fn find_free_space_stop(blocks: &[Block], free_space_start: usize) -> usize {
 }
 #[cfg(test)]
 mod tests {
+    use crate::answers::{DAY_09_EASY, DAY_09_HARD};
     use crate::day_09::{find_file_start, parse_input, Compress};
 
     const EASY: &str = include_str!("../resources/day_09/easy.txt");
@@ -217,7 +218,7 @@ mod tests {
             .filter_map(|(index, block)| block.map(|id| id * index))
             .sum::<usize>();
 
-        let right = 2858;
+        let right = DAY_09_EASY;
         assert_eq!(left, right)
     }
     #[test]
@@ -230,7 +231,7 @@ mod tests {
             .filter_map(|(index, block)| block.map(|id| id * index))
             .sum::<usize>();
 
-        let right = 6289564433984;
+        let right = DAY_09_HARD;
         assert_eq!(left, right)
     }
 }

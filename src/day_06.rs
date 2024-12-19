@@ -107,6 +107,7 @@ mod tests {
     use crate::day_06::{find_obstructions, find_patrol_path, Lab};
     use std::collections::HashSet;
     use std::hash::Hash;
+    use crate::answers::{DAY_06_EASY, DAY_06_HARD};
 
     const INPUT: &str = include_str!("../resources/day_06/easy.txt");
     const PREAMBLE: &str = include_str!("../resources/day_06/preamble.txt");
@@ -125,7 +126,7 @@ mod tests {
         let mut left = HashSet::new();
         left.extend(find_patrol_path(&lab).unwrap());
         let left = left.len();
-        let right = 4752;
+        let right = DAY_06_EASY;
         assert_eq!(left, right);
     }
     #[test]
@@ -145,6 +146,6 @@ mod tests {
             }
             print!("\n");
         }
-        assert_eq!(left.len(), 1719);
+        assert_eq!(left.len(), DAY_06_HARD);
     }
 }

@@ -215,6 +215,7 @@ fn get_rating(trail_start: &Point<usize>, terrain: &Vec<Vec<u32>>) -> usize {
 }
 #[cfg(test)]
 mod test {
+    use crate::answers::{DAY_10_EASY, DAY_10_HARD};
     use crate::day_10::{find_rating_score, find_score};
 
     const PREAMBLE: &str = include_str!("../resources/day_10/preamble.txt");
@@ -237,7 +238,7 @@ mod test {
     fn easy() {
         let input = parse_input(EASY);
         let left = find_score(&input);
-        let right = 36;
+        let right = DAY_10_EASY;
         assert_eq!(left, right);
     }
     #[test]
@@ -251,7 +252,7 @@ mod test {
     fn hard() {
         let input = parse_input(EASY);
         let left = find_rating_score(&input);
-        let right = 1110;
+        let right = DAY_10_HARD;
         assert_eq!(left, right);
     }
 }

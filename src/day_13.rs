@@ -45,7 +45,7 @@ fn fewest_tokens(trials: &Vec<Trial>) -> isize{
 mod tests {
     use regex::Regex;
     use lazy_static::lazy_static;
-
+    use crate::answers::{DAY_13_EASY, DAY_13_HARD};
     use crate::day_13::{fewest_tokens, Button, Prize, Trial};
     const PREAMBLE: &str = include_str!("../resources/day_13/preamble.txt");
     const EASY: &str = include_str!("../resources/day_13/easy.txt");
@@ -114,23 +114,15 @@ mod tests {
     fn easy() {
         let input = parse_input(EASY);
         let left = fewest_tokens(&input);
-        let right = 33921;
+        let right = DAY_13_EASY;
         assert_eq!(left, right)
     }
 
-    #[test]
-    fn preamble_hard() {
-
-        let input = parse_hard_input(PREAMBLE);
-        let left = fewest_tokens(&input);
-        let right = 480;
-        assert_eq!(left, right)
-    }
     #[test]
     fn hard() {
         let input = parse_hard_input(EASY);
         let left = fewest_tokens(&input);
-        let right = 82261957837868;
+        let right = DAY_13_HARD;
         assert_eq!(left, right)
     }
 }
